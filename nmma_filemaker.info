@@ -4,8 +4,17 @@ package = "Migration"
 core = 7.x
 
 dependencies[] = migrate
+dependencies[] = field
+dependencies[] = file
+dependencies[] = image
+dependencies[] = number
+dependencies[] = text
+dependencies[] = options
+dependencies[] = taxonomy
+dependencies[] = date
 
 ; include the files that contain your Migrate classes
+files[] = nmma_collection_migrate.inc
 ; files[] = user.inc
 ; files[] = forum.inc
 ; files[] = gallery.inc
