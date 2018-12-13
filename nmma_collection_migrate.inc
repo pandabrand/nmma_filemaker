@@ -43,6 +43,6 @@ class NMMACollectionMigration extends Migration {
       echo $ex;
     }
 
-    return $body
+    return $body;
   }
 }
