@@ -19,7 +19,7 @@ class NMMACollectionMigration extends Migration {
     $fields = array();
   }
 
-  public functions getToken() {
+  public function getToken() {
 
     $request = new HttpRequest();
     $request->setUrl("https://$this->api_server/fmi/data/v1/databases/$this->api_database/sessions");
