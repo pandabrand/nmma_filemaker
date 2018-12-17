@@ -15,6 +15,7 @@ dependencies[] = date
 
 ; include the files that contain your Migrate classes
 files[] = nmma_collection_migrate.inc
+files[] = filemaker_talker.inc
 ; files[] = user.inc
 ; files[] = forum.inc
 ; files[] = gallery.inc

@@ -1,48 +1,66 @@
 <?php
 
 class NMMACollectionMigration extends Migration {
-  public $api_server;
-  public $api_database;
-  public $api_layout;
-  public $api_auth;
-
-  public function __construct($arguments) {
+  public function __construct() {
     parent::__construct($arguments);
 
     $this->description = t('Import Collection from FileMaker Cloud');
     $this->defaultLanguage = 'en';
-    $this->api_server = variable_get('api_server');
-    $this->api_database = variable_get('api_db');
-    $this->api_layout = variable_get('api_layout');
-    $this->api_auth = variable_get('api_auth');
 
-    $fields = array();
-  }
+		$fields = array(
+			'recordId' => t('Record ID'),
+			'Approved_for_Web' => t('Approved for Web'),
+			'Main' => t('Main'),
+			'Image_Ready' => t('Image ready'),
+			'Artist_Birth' => t('Artist Birth'),
+			'Artist_Death' => t('Artist Death'),
+			'Artist_Country' => t('Artist Country'),
+			'Accession_number' => t('Accession Number'),
+			'Accession_Part' => t('Accession part'),
+			'Object_Type' => t('Object Type'),
+			'Culture' => t('Culture'),
+			'Artist_First_Name' => t('Artist First Name'),
+			'Artist_Middle_Name' => t('Artist Middle Name'),
+			'Artist_Last_Name' => t('Artist Last Name'),
+			'Designer_Last_Name' => t('Designer Last Name'),
+			'Designer_First_Name' => t('Designer First Name'),
+			'Designer_Middle_Name' => t('Designer Middle Name'),
+			'Creation_Month' => t('Creation Month'),
+			'Photographer_First_Name' => t('Photographer First Name'),
+			'Photographer_Last_Name' => t('Photographer Last Name'),
+			'Photographer_Middle_Name' => t('Photographer Middle Name'),
+			'Title' => t('Title'),
+			'Phase_Style' => t('Phase Style'),
+			'Translation' => t('Translation'),
+			'Period' => t('Period'),
+			'Region' => t('Region'),
+			'Media' => t('Media'),
+			'Edition_Run' => t('Edition Run'),
+			'Creation_Year' => t('Creation Year'),
+			'Dimensions' => t('Dimensions'),
+			'Paper_Dimensions' => t('Paper Dimensions'),
+			'Credit' => t('Credit'),
+      'Image Name' => t('Image Name'),
+      'permcoll_IMAGES~recordID::webImage' => t('Web Image Path'),
+      'permcoll_IMAGES::webImageName' => t('Web Image Name'),
+    );
 
-  public function getToken() {
+    $this->source = new MigrationSourceList();
+    $this->destination = new MigrateDestinationNode('nmma_collection_item_json');
 
-    $request = new HttpRequest();
-    $request->setUrl("https://$this->api_server/fmi/data/v1/databases/$this->api_database/sessions");
-    $request->setMethod(HTTP_METH_POST);
+		// Mapping
 
-    $request->setHeaders(array(
-      'Postman-Token' => '9f053441-448b-4b2d-9c2b-ecb56d7eb7c6',
-      'Cache-Control' => 'no-cache',
-      'Authorization' => $this->api_auth,
-      'Content-Type' => 'application/json'
-    ));
+		$keySchema = MigrateDestinationNode::getKeySchema();
 
-    $request->setBody('{}');
+		$this->map = new MigrateSQLMap($this->machineName,
+			array(
+				'recordId' => array(
+					'type' => 'varchar',
+					'length' => 255,
+				),
+			),
+			$keySchema
+		);
 
-    try {
-      $response = $request->send();
-      $body = $response->getBody();
-      watchdog('migrate_logging', '<pre>' . $body . '</pre>');
-    } catch (HttpException $ex) {
-      watchdog('migrate_logging', '<pre>error: ' . $ex . '</pre>');
-      echo $ex;
-    }
-
-    return $body;
   }
 }
