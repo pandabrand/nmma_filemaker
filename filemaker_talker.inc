@@ -89,6 +89,8 @@
       // At this point, $this->currentElement (which will eventually become our $row object
       // in the migration class) contains Release and Artist objects. We want to move the
       // Release fields up to the top level.
+      watchdog('nmma_filemaker', $this->currentElement, WATCHDOG_NOTICE);
+
       if (is_object($this->currentElement)) {
         foreach ($this->currentElement->response->data as $field_name => $field_value) {
           $this->currentElement->$field_name = $field_value;
