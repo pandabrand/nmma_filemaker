@@ -101,8 +101,8 @@ class NMMACollectionMigration extends Migration {
 		$this->addFieldMapping('field_region', 'Region');
 		$this->addFieldMapping('field_region:create_term');
 		$this->addFieldMapping('field_region:ignore_case');
-		$this->addFieldMapping('field_translation', 'Translation')->xpath('Translation');
-		$this->addFieldMapping('field_media', 'Media')->xpath('Media');
+		$this->addFieldMapping('field_translation', 'Translation');
+		$this->addFieldMapping('field_media', 'Media');
 
   }
 }
