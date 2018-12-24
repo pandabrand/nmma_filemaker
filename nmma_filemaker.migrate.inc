@@ -18,7 +18,7 @@ function nmma_filemaker_migrate_api() {
       ),
     ),
     'migrations' => array(
-      'NMMACollectionItems' => array(
+      'NmmaCollectionItems' => array(
         'class_name' => 'NMMACollectionMigration',
         'group_name' => 'nmma_filemaker',
       ),

@@ -49,7 +49,7 @@ class NMMACollectionMigration extends Migration {
       drupal_get_path('module', 'nmma_filemaker') . '/example/data/';
 		$json_file = $json_folder . 'example-response.json';
 
-    $this->source = new MigrateSourceList(new FileMakerListJSON($json_file), new FileMakerItemJSON($json_file, array(), $fields));
+    $this->source = new MigrateSourceJSON(new FileMakerListJSON($json_file), new FileMakerItemJSON($json_file, array(), $fields));
     $this->destination = new MigrateDestinationNode('nmma_collection_item_json');
 
 		// Mapping
