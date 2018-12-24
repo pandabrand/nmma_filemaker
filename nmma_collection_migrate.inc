@@ -45,8 +45,8 @@ class NMMACollectionMigration extends Migration {
       'permcoll_IMAGES::webImageName' => t('Web Image Name'),
     );
 
-    $this->source = new MigrationSourceList();
-    $this->destination = new MigrateDestinationNode('nmma_collection_item_json');
+    // $this->source = new MigrationSourceList();
+    // $this->destination = new MigrateDestinationNode('nmma_collection_item_json');
 
 		// Mapping
 

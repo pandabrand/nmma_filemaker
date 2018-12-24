@@ -30,9 +30,9 @@
       try {
         $response = $request->send();
         $body = $response->getBody();
-        watchdog('migrate_logging', '<pre>' . $body . '</pre>');
+        watchdog('migrate_logging', '<pre>' . $body . '</pre>', WATCHDOG_NOTICE);
       } catch (HttpException $ex) {
-        watchdog('migrate_logging', '<pre>error: ' . $ex . '</pre>');
+        watchdog('migrate_logging', '<pre>error: ' . $ex . '</pre>', WATCHDOG_NOTICE);
         echo $ex;
       }
 
