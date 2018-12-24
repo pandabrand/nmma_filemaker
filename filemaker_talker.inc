@@ -79,6 +79,27 @@
 
   }
 
+  class FileMakerJSONReader extends MigrateJSONReader {
+    /**
+     * Implements MigrateJSONReader::next().
+     */
+    public function next() {
+      // Do the default fetch.
+      parent::next();
+      // At this point, $this->currentElement (which will eventually become our $row object
+      // in the migration class) contains Release and Artist objects. We want to move the
+      // Release fields up to the top level.
+      if (is_object($this->currentElement)) {
+        foreach ($this->currentElement->response->data as $field_name => $field_value) {
+          $this->currentElement->$field_name = $field_value;
+        }
+        // Get rid of the Release object, we won't be referencing it. Leave the Artist object - it
+        // will be available in prepareRow(), prepare(), etc. should we want to reference it.
+        unset($this->currentElement->messages);
+      }
+    }
+  }
+
   class FileMakerItemJSON extends MigrateItemJSON {
     protected $data = array();
     /**
