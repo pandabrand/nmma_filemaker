@@ -47,8 +47,6 @@
      * for the IDs.
      */
     protected function getIDsFromJSON(array $data) {
-      watchdog('nmma_filemaker', print_r($data, true), WATCHDOG_NOTICE);
-
       $ids = array();
       foreach ($data['response']['data'] as $item) {
         $ids[] = $item['recordId'];
@@ -78,7 +76,6 @@
       }
       return $count;
     }
-
   }
 
   class FileMakerJSONReader extends MigrateJSONReader {
@@ -206,7 +203,7 @@
           // Let's index the array by the ID for easy retrieval.
 
           foreach ($data as $item) {
-            $this->data[$item->recordId] = $item;
+            $this->data[$item['recordId']] = $item;
           }
         }
         else {
