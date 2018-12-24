@@ -68,6 +68,8 @@
       }
       if ($json) {
         $data = drupal_json_decode($json);
+        watchdog('migrate_logging', $data, WATCHDOG_NOTICE);
+
         if ($data) {
           $count = count($data['response']['data']);
         }
@@ -92,7 +94,7 @@
           // Let's index the array by the ID for easy retrieval.
 
           foreach ($data as $item) {
-            $this->data[$item->id] = $item;
+            $this->data[$item->recordId] = $item;
           }
         }
         else {

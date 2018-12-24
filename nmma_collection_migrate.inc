@@ -1,7 +1,7 @@
 <?php
 
 class NMMACollectionMigration extends Migration {
-  public function __construct() {
+  public function __construct($arguments) {
     parent::__construct($arguments);
 
     $this->description = t('Import Collection from FileMaker Cloud');
