@@ -45,7 +45,7 @@ class NMMACollectionMigration extends Migration {
       'permcoll_IMAGES::webImageName' => t('Web Image Name'),
     );
 
-		$json_file = './example/data/example-response.json';
+		$json_file = dirname(__FILE__) . '/example/data/example-response.json';
 
     $this->source = new MigrateSourceList(new FileMakerListJSON($json_file), new FileMakerItemJSON($json_file, array(), $fields));
     $this->destination = new MigrateDestinationNode('nmma_collection_item_json');
