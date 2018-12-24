@@ -48,7 +48,8 @@ class NMMACollectionMigration extends Migration {
 		$json_folder = DRUPAL_ROOT . '/' . 'sites/all/modules/nmma_filemaker/example/data/';
 		$json_file = $json_folder . 'example-response.json';
 
-    $this->source = new MigrateSourceJSON($json_file, 'recordId', $fields, array('reader_class' => 'FileMakerJSONReader'));
+		$this->source = new MigrateSourceList(new FileMakerListJSON($json_file), new FileMakerItemJSON($json_file, array()), $fields);
+		// $this->source = new MigrateSourceJSON($json_file, 'recordId', $fields, array('reader_class' => 'FileMakerJSONReader'));
     $this->destination = new MigrateDestinationNode('nmma_collection_item_json');
 
 		// Mapping
