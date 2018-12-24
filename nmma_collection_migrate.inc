@@ -47,7 +47,7 @@ class NMMACollectionMigration extends Migration {
 
 		$json_file = '/example/data/example-response.json';
 
-    $this->source = new MigrationSourceList(new FileMakerListJSON($json_file), new FileMakerItemJSON($json_file, array(), $fields));
+    $this->source = new MigrateSourceList(new FileMakerListJSON($json_file), new FileMakerItemJSON($json_file, array(), $fields));
     $this->destination = new MigrateDestinationNode('nmma_collection_item_json');
 
 		// Mapping
