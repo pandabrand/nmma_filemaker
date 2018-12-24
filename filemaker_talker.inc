@@ -203,6 +203,8 @@
           // Let's index the array by the ID for easy retrieval.
 
           foreach ($data as $item) {
+            Migration::displayMessage( print_r( $item, true ) );
+            Migration::displayMessage( print_r( $this->data, true ) );
             $this->data[$item['recordId']] = $item;
           }
         }
