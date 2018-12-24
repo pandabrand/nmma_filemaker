@@ -45,8 +45,7 @@ class NMMACollectionMigration extends Migration {
       'permcoll_IMAGES::webImageName' => t('Web Image Name'),
     );
 
-		$json_folder = DRUPAL_ROOT . '/' .
-      drupal_get_path('modules', 'nmma_filemaker') . '/example/data/';
+		$json_folder = DRUPAL_ROOT . '/' . 'sites/all/modules/nmma_filemaker/example/data/';
 		$json_file = $json_folder . 'example-response.json';
 
     $this->source = new MigrateSourceJSON(new FileMakerListJSON($json_file), new FileMakerItemJSON($json_file, array(), $fields));
