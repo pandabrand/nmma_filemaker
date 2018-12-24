@@ -48,9 +48,10 @@
      */
     protected function getIDsFromJSON(array $data) {
       $ids = array();
-      Migration::displayMessage( print_r( $data['response'], true ) );
+      $records = $data['response']['data'];
+      // Migration::displayMessage( print_r( $records, true ) );
 
-      foreach ($data['response']['data'] as $item) {
+      foreach ($records as $item) {
         $ids[] = $item['recordId'];
       }
       return $ids;
@@ -202,7 +203,7 @@
         if ($data) {
           // Let's index the array by the ID for easy retrieval.
 
-          foreach ($data as $item) {
+          foreach ($data['response']['data'] as $item) {
             // Migration::displayMessage( print_r( $item, true ) );
             $this->data[$item->recordId] = $item;
           }
