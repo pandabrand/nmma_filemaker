@@ -206,7 +206,7 @@
             if($key == 1) {
               Migration::displayMessage( print_r( $item, true ) );
             }
-            $this->data[$item['recordId']] = $item;
+            $this->data[$item->recordId] = $item;
           }
         }
         else {
