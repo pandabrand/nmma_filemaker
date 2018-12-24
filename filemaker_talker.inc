@@ -48,6 +48,8 @@
      */
     protected function getIDsFromJSON(array $data) {
       $ids = array();
+      Migration::displayMessage( print_r( $data['response'], true ) );
+
       foreach ($data['response']['data'] as $item) {
         $ids[] = $item['recordId'];
       }
@@ -68,9 +70,7 @@
       }
       if ($json) {
         $data = drupal_json_decode($json);
-        watchdog('migrate_logging', $data, WATCHDOG_NOTICE);
-
-        if ($data) {
+          if ($data) {
           $count = count($data['response']['data']);
         }
       }
@@ -202,8 +202,8 @@
         if ($data) {
           // Let's index the array by the ID for easy retrieval.
 
-          foreach ($data as $key => $item) {
-            Migration::displayMessage( print_r( $item, true ) );
+          foreach ($data as $item) {
+            // Migration::displayMessage( print_r( $item, true ) );
             $this->data[$item->recordId] = $item;
           }
         }
