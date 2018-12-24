@@ -39,6 +39,7 @@
       return $body;
     }
   }
+
   class FileMakerListJSON extends MigrateListJSON {
     /**
      * The default implementation assumes the IDs are top-level array elements,
@@ -54,25 +55,25 @@
     }
 
     /**
-   * If this is the case then the count will be off as well and we will have to overriden as well.
-   */
-  public function computeCount() {
-    $count = 0;
-    if (empty($this->httpOptions)) {
-      $json = file_get_contents($this->listUrl);
-    }
-    else {
-      $response = drupal_http_request($this->listUrl, $this->httpOptions);
-      $json = $response->data;
-    }
-    if ($json) {
-      $data = drupal_json_decode($json);
-      if ($data) {
-        $count = count($data['response']['data']);
+     * If this is the case then the count will be off as well and we will have to overriden as well.
+     */
+    public function computeCount() {
+      $count = 0;
+      if (empty($this->httpOptions)) {
+        $json = file_get_contents($this->listUrl);
       }
+      else {
+        $response = drupal_http_request($this->listUrl, $this->httpOptions);
+        $json = $response->data;
+      }
+      if ($json) {
+        $data = drupal_json_decode($json);
+        if ($data) {
+          $count = count($data['response']['data']);
+        }
+      }
+      return $count;
     }
-    return $count;
-  }
 
   }
 

@@ -45,22 +45,24 @@ class NMMACollectionMigration extends Migration {
       'permcoll_IMAGES::webImageName' => t('Web Image Name'),
     );
 
-    // $this->source = new MigrationSourceList();
-    // $this->destination = new MigrateDestinationNode('nmma_collection_item_json');
+		$json_file = '/example/data/example-response.json';
+
+    $this->source = new MigrationSourceList(new FileMakerListJSON($json_file), new FileMakerItemJSON($json_file, array(), $fields));
+    $this->destination = new MigrateDestinationNode('nmma_collection_item_json');
 
 		// Mapping
 
-		// $keySchema = MigrateDestinationNode::getKeySchema();
+		$keySchema = MigrateDestinationNode::getKeySchema();
 
-		// $this->map = new MigrateSQLMap($this->machineName,
-		// 	array(
-		// 		'recordId' => array(
-		// 			'type' => 'varchar',
-		// 			'length' => 255,
-		// 		),
-		// 	),
-		// 	$keySchema
-		// );
+		$this->map = new MigrateSQLMap($this->machineName,
+			array(
+				'recordId' => array(
+					'type' => 'varchar',
+					'length' => 255,
+				),
+			),
+			$keySchema
+		);
 
   }
 }
