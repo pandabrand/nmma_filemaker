@@ -202,10 +202,9 @@
         $data = $this->loadJSONUrl($this->itemUrl);
         if ($data) {
           // Let's index the array by the ID for easy retrieval.
-          Migration::displayMessage(print_r($data, true));
-          watchdog('nmma_filemaker', $data, WATCHDOG_ERROR);
-          foreach ($data['response']['data'] as $item) {
-            // Migration::displayMessage( print_r( $item, true ) );
+          $response_data = $data->response->data;
+          Migration::displayMessage(print_r($response_data, true));
+          foreach ($response_data as $item) {
             $this->data[$item->recordId] = $item;
           }
         }
