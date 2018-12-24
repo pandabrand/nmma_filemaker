@@ -50,17 +50,17 @@ class NMMACollectionMigration extends Migration {
 
 		// Mapping
 
-		$keySchema = MigrateDestinationNode::getKeySchema();
+		// $keySchema = MigrateDestinationNode::getKeySchema();
 
-		$this->map = new MigrateSQLMap($this->machineName,
-			array(
-				'recordId' => array(
-					'type' => 'varchar',
-					'length' => 255,
-				),
-			),
-			$keySchema
-		);
+		// $this->map = new MigrateSQLMap($this->machineName,
+		// 	array(
+		// 		'recordId' => array(
+		// 			'type' => 'varchar',
+		// 			'length' => 255,
+		// 		),
+		// 	),
+		// 	$keySchema
+		// );
 
   }
 }
