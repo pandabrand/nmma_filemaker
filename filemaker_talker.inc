@@ -26,7 +26,7 @@
 
       $result = drupal_http_request($url, array(
         'method' => $method,
-        'header' => $headers
+        'headers' => $headers
       ));
 
       $body = $result->data;
