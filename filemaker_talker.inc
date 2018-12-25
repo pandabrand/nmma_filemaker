@@ -14,26 +14,29 @@
 
     public function getToken() {
 
-      $request = new HttpRequest();
-      $request->setUrl("https://$this->api_server/fmi/data/v1/databases/$this->api_database/sessions");
-      $request->setMethod(HTTP_METH_POST);
+      $url = "https://$this->api_server/fmi/data/v1/databases/$this->api_database/sessions";
+      $method = 'POST';
 
-      $request->setHeaders(array(
+      $headers = array(
         'Cache-Control' => 'no-cache',
         'Authorization' => $this->api_auth,
         'Content-Type' => 'application/json'
+      );
+
+      $result = drupal_http_request($url, array(
+        'method' => $method,
+        'header' => $headers
       ));
 
-      $request->setBody('{}');
-
-      try {
-        $response = $request->send();
-        $body = $response->getBody();
-        watchdog('migrate_logging', '<pre>' . $body . '</pre>', WATCHDOG_NOTICE);
-      } catch (HttpException $ex) {
-        watchdog('migrate_logging', '<pre>error: ' . $ex . '</pre>', WATCHDOG_NOTICE);
-        echo $ex;
-      }
+      $body = $result->data;
+      // try {
+      //   $response = $request->send();
+      //   $body = $response->getBody();
+      //   watchdog('migrate_logging', '<pre>' . $body . '</pre>', WATCHDOG_NOTICE);
+      // } catch (HttpException $ex) {
+      //   watchdog('migrate_logging', '<pre>error: ' . $ex . '</pre>', WATCHDOG_NOTICE);
+      //   echo $ex;
+      // }
 
       return $body;
     }
