@@ -102,5 +102,56 @@ class NMMACollectionMigration extends Migration {
 		$this->addFieldMapping('field_region:ignore_case');
 		$this->addFieldMapping('field_translation', 'Translation');
 		$this->addFieldMapping('field_media', 'Media');
-  }
+	}
+
+	public function prepareRow($row) {
+		if (parent::prepareRow($row) === FALSE) {
+			return FALSE;
+		}
+
+		$row->Title = $row->fieldData->Title;
+		$row->Accession_number = $row->fieldData->Accession_number;
+		$row->Accession_Part = $row->fieldData->Accession_Part;
+		$row->Approved_for_Web = $row->fieldData->Approved_for_Web;
+		$row->Image_Ready = $row->fieldData->Image_Ready;
+		$row->Artist_First_Name = $row->fieldData->Artist_First_Name;
+		$row->Artist_Middle_Name = $row->fieldData->Artist_Middle_Name;
+		$row->Artist_Last_Name = $row->fieldData->Artist_Last_Name;
+		$row->Designer_First_Name = $row->fieldData->Designer_First_Name;
+		$row->Designer_Middle_Name = $row->fieldData->Designer_Middle_Name;
+		$row->Designer_Last_Name = $row->fieldData->Designer_Last_Name;
+		$row->Photographer_First_Name = $row->fieldData->Photographer_First_Name;
+		$row->Photographer_Middle_Name = $row->fieldData->Photographer_Middle_Name;
+		$row->Photographer_Last_Name = $row->fieldData->Photographer_Last_Name;
+		$row->Artist_Birth = $row->fieldData->Artist_Birth;
+		$row->Artist_Death = $row->fieldData->Artist_Death;
+		$row->Artist_Country = $row->fieldData->Artist_Country;
+		$row->Culture = $row->fieldData->Culture;
+		$row->Object_Type = $row->fieldData->Object_Type;
+		$row->Phase_Style = $row->fieldData->Phase_Style;
+		$row->Period = $row->fieldData->Period;
+		$row->Creation_Year = $row->fieldData->Creation_Year;
+		$row->Dimensions = $row->fieldData->Dimensions;
+		$row->Paper_Dimensions = $row->fieldData->Paper_Dimensions;
+		$row->Edition_Run = $row->fieldData->Edition_Run;
+		$row->Credit = $row->fieldData->Credit;
+		$row->Region = $row->fieldData->Region;
+		$row->Translation = $row->fieldData->Translation;
+		$row->Media = $row->fieldData->Media;
+
+		return TRUE;
+	}
+
+	protected function computeApprovedForWeb($value) {
+		$value = ($value === 'Web') ? 1 : 0;
+		return $value;
+	}
+
+	protected function computeImageReady($value) {
+		return intval($value);
+	}
+
+	protected function trimTitle($value) {
+		return (strlen($value) > 255) ? substr($value, 0, 255) : $value;
+	}
 }
