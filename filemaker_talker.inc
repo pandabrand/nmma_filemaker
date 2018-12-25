@@ -203,7 +203,7 @@
         if ($data) {
           // Let's index the array by the ID for easy retrieval.
           $response_data = $data->response->data;
-          Migration::displayMessage(print_r($response_data, true));
+          // Migration::displayMessage(print_r($response_data, true));
           foreach ($response_data as $item) {
             $this->data[$item->recordId] = $item;
           }
