@@ -22,6 +22,7 @@
         'Authorization' => $this->api_auth,
         'Content-Type' => 'application/json'
       );
+      Migration::displayMessage(print_r($headers, true));
 
       $result = drupal_http_request($url, array(
         'method' => $method,
