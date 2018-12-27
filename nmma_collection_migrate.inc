@@ -159,7 +159,7 @@ class NMMACollectionMigration extends Migration {
 
 		$context = stream_context_create($opts);
 
-		$image = file_get_contents($row->fieldData->$origin_prop, false, $opts);
+		$image = file_get_contents($row->fieldData->$origin_prop, false, $context);
 		$file = file_save_data($image, 'public://' . $row->fieldData->$filename_prop, FILE_EXISTS_REPLACE);
 		// $file_info = system_retrieve_file($row->fieldData->$origin_prop, 'public://pictures/'.$row->fieldData->$filename_prop, FALSE, FILE_EXISTS_RENAME);
 
