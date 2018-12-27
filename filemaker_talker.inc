@@ -36,19 +36,19 @@
 
       return $body;
     }
-  }
 
-	function get_token() {
-		if ( $cached_token = cache_get('fm_token', 'cache' ) ) {
-      $token = $cached_token->data;
-    } else {
-      $auth = $this->auth();
-			$token = $auth->response->token;
-      cache_set('fm_token', $token, 'cache', time() + 360);
+    function get_token() {
+      if ( $cached_token = cache_get('fm_token', 'cache' ) ) {
+        $token = $cached_token->data;
+      } else {
+        $auth = $this->auth();
+        $token = $auth->response->token;
+        cache_set('fm_token', $token, 'cache', time() + 360);
+      }
+
+      return $token;
     }
-
-		return $token;
-	}
+  }
 
   class FileMakerListJSON extends MigrateListJSON {
     /**
