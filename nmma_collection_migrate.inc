@@ -189,7 +189,7 @@ class NMMACollectionMigration extends Migration {
 	}
 
 	protected function computeImageReady($value) {
-		return $value = ($value == 0) ? 0 : 1;
+		return intval($value);
 	}
 
 	protected function trimTitle($value) {
