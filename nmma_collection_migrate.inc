@@ -1,6 +1,7 @@
 <?php
 
 class NMMACollectionMigration extends Migration {
+	protected $json_file;
   public function __construct($arguments) {
     parent::__construct($arguments);
 
@@ -47,14 +48,14 @@ class NMMACollectionMigration extends Migration {
 
 
 		$talker = new FileMakerTalker();
-		$json_file = $talker->get_items();
+		$this->json_file = $talker->get_items();
 		// $this->json_file = $talker->json_folder . 'example-response.json';
 
 		// because migration is the WORST call the query first write it to file
 		// THEN use this because, uugggghhhhhh
 		$this->source = new MigrateSourceList(
-			new FileMakerListJSON('public://'.$json_file->filename),
-			new FileMakerItemJSON('public://'.$json_file->filename, array()), $fields
+			new FileMakerListJSON('public://'.$this->json_file->filename),
+			new FileMakerItemJSON('public://'.$this->json_file->filename, array()), $fields
 		);
     $this->destination = new MigrateDestinationNode('nmma_collection_item_json');
 
@@ -108,6 +109,15 @@ class NMMACollectionMigration extends Migration {
 		$this->addFieldMapping('field_region:ignore_case');
 		$this->addFieldMapping('field_translation', 'Translation');
 		$this->addFieldMapping('field_media', 'Media');
+
+		// specify destination dir
+		// $this->addFieldMapping('field_item_image:destination_dir');
+		// use callback to find a matching file
+		$this->addFieldMapping('field_item_image:value','origin');
+		// use existing files
+		$this->addFieldMapping('field_item_image:file_replace')->defaultValue(FILE_EXISTS_REPLACE);
+		$this->addFieldMapping('field_item_image:image_alt','Title')->xpath('Title');
+
 	}
 
 	public function prepareRow($row) {
@@ -135,6 +145,8 @@ class NMMACollectionMigration extends Migration {
 		$creation_year_prop = 'Creation Year';
 		$paper_dimensions_prop = 'Paper Dimensions';
 		$edition_run_prop = 'Edition Run';
+		$filename_prop = 'permcoll_IMAGES::webImageName';
+		$origin_prop = 'permcoll_IMAGES~recordID::webImage';
 
 		$row->Title = $row->fieldData->Title;
 		$row->Accession_number = $row->fieldData->$accession_num_prop;
@@ -165,6 +177,8 @@ class NMMACollectionMigration extends Migration {
 		$row->Region = $row->fieldData->Region;
 		$row->Translation = $row->fieldData->Translation;
 		$row->Media = $row->fieldData->Media;
+		$row->image_name = $row->fieldData->$filename_prop;
+		$row->origin = $row->fieldData->$origin_prop;
 
 		return TRUE;
 	}
@@ -181,4 +195,9 @@ class NMMACollectionMigration extends Migration {
 	protected function trimTitle($value) {
 		return (strlen($value) > 255) ? substr($value, 0, 255) : $value;
 	}
+
+	public function postImport() {
+		parent::postImport();
+		file_delete($this->json_file);
+  }
 }
