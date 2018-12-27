@@ -179,6 +179,8 @@ class NMMACollectionMigration extends Migration {
 		$row->image_name = $row->fieldData->$filename_prop;
 		$row->origin = $row->fieldData->$origin_prop;
 
+		Migration::displayMessage( print_r( $row->image_name, true ) );
+		Migration::displayMessage( print_r( $row->origin, true ) );
 		return TRUE;
 	}
 
