@@ -48,6 +48,7 @@ class NMMACollectionMigration extends Migration {
 
 		$talker = new FileMakerTalker();
 		$json_file = $talker->get_items();
+		Migration::displayMessage($json_file);
 		// $this->json_file = $talker->json_folder . 'example-response.json';
 
 		// Migration::displayMessage(print_r($talker->get_token(), true));

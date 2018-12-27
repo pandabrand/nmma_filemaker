@@ -5,14 +5,12 @@
     protected $api_layout;
     protected $api_auth;
     protected $json_file;
-    protected $json_folder;
 
     public function __construct() {
       $this->api_server = variable_get('api_server');
       $this->api_database = variable_get('api_db');
       $this->api_layout = variable_get('api_layout');
       $this->api_auth = variable_get('api_auth');
-      $this->json_folder = DRUPAL_ROOT . '/' . 'sites/all/modules/nmma_filemaker/';
       $this->json_file = '';
     }
 
@@ -75,17 +73,14 @@
 
       if($result->status_message == 'OK') {
         $body = $result->data;
-        Migration::displayMessage( print_r( $body, true ) );
         $timestamp = date("Y-m-d_H:i:s");
         $ft_name = $timestamp . '-filetalker.json';
         $this->json_file = file_save_data( $body, 'public://' . $ft_name );
-
-        return $this->json_file;
       } else {
         Migration::displayMessage($result->status_message);
         Migration::displayMessage($result->data);
       }
-
+      return $this->json_file;
     }
 
   }
