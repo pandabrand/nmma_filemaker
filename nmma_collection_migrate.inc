@@ -149,7 +149,7 @@ class NMMACollectionMigration extends Migration {
 		$filename_prop = 'permcoll_IMAGES::webImageName';
 		$origin_prop = 'permcoll_IMAGES~recordID::webImage';
 
-		Migration::displayMessage( print_r( $opts, true ) );
+		// Migration::displayMessage( print_r( $opts, true ) );
 
 		/* STEP 1. create a cookie file */
 
@@ -163,6 +163,7 @@ class NMMACollectionMigration extends Migration {
 
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
+		Migration::displayMessage( print_r( $ch, true ) );
 		$output = curl_exec($ch);
 
 		// $cookie_string = file_get_contents( $ckfile );
