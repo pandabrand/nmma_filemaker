@@ -48,19 +48,14 @@ class NMMACollectionMigration extends Migration {
 
 		$talker = new FileMakerTalker();
 		$json_file = $talker->get_items();
-		Migration::displayMessage($json_file->filename);
 		// $this->json_file = $talker->json_folder . 'example-response.json';
-
-		// Migration::displayMessage(print_r($talker->get_token(), true));
 
 		// because migration is the WORST call the query first write it to file
 		// THEN use this because, uugggghhhhhh
-
 		$this->source = new MigrateSourceList(
 			new FileMakerListJSON('public://'.$json_file->filename),
 			new FileMakerItemJSON('public://'.$json_file->filename, array()), $fields
 		);
-		// $this->source = new MigrateSourceJSON($json_file, 'recordId', $fields, array('reader_class' => 'FileMakerJSONReader'));
     $this->destination = new MigrateDestinationNode('nmma_collection_item_json');
 
 		// Mapping
@@ -120,31 +115,52 @@ class NMMACollectionMigration extends Migration {
 			return FALSE;
 		}
 
+		$accession_num_prop = 'Accession #';
+		$accession_part_prop = 'Accession Part';
+		$image_ready_prop = 'Image Ready';
+		$artist_first_prop = 'Artist First Name';
+		$artist_middle_prop = 'Artist Middle Name';
+		$artist_last_prop = 'Artist Last Name';
+		$designer_first_prop = 'Designer First Name';
+		$designer_middle_prop = 'Designer Middle Name';
+		$designer_last_prop = 'Designer Last Name';
+		$photo_first_prop = 'Photographer First Name';
+		$photo_middle_prop = 'Photographer Middle Name';
+		$photo_last_prop = 'Photographer Last Name';
+		$artist_birth_prop = 'Artist Birth';
+		$artist_death_prop = 'Artist Death';
+		$artist_country_prop = 'Artist Country';
+		$object_type_prop = 'Object Type';
+		$phase_style_prop = 'Phase Style';
+		$creation_year_prop = 'Creation Year';
+		$paper_dimensions_prop = 'Paper Dimensions';
+		$edition_run_prop = 'Edition Run';
+
 		$row->Title = $row->fieldData->Title;
-		$row->Accession_number = $row->fieldData->Accession_number;
-		$row->Accession_Part = $row->fieldData->Accession_Part;
+		$row->Accession_number = $row->fieldData->$accession_num_prop;
+		$row->Accession_Part = $row->fieldData->accession_part_prop;
 		$row->Approved_for_Web = $row->fieldData->Approved_for_Web;
-		$row->Image_Ready = $row->fieldData->Image_Ready;
-		$row->Artist_First_Name = $row->fieldData->Artist_First_Name;
-		$row->Artist_Middle_Name = $row->fieldData->Artist_Middle_Name;
-		$row->Artist_Last_Name = $row->fieldData->Artist_Last_Name;
-		$row->Designer_First_Name = $row->fieldData->Designer_First_Name;
-		$row->Designer_Middle_Name = $row->fieldData->Designer_Middle_Name;
-		$row->Designer_Last_Name = $row->fieldData->Designer_Last_Name;
-		$row->Photographer_First_Name = $row->fieldData->Photographer_First_Name;
-		$row->Photographer_Middle_Name = $row->fieldData->Photographer_Middle_Name;
-		$row->Photographer_Last_Name = $row->fieldData->Photographer_Last_Name;
-		$row->Artist_Birth = $row->fieldData->Artist_Birth;
-		$row->Artist_Death = $row->fieldData->Artist_Death;
-		$row->Artist_Country = $row->fieldData->Artist_Country;
+		$row->Image_Ready = $row->fieldData->$image_ready_prop;
+		$row->Artist_First_Name = $row->fieldData->$artist_first_prop;
+		$row->Artist_Middle_Name = $row->fieldData->$artist_middle_prop;
+		$row->Artist_Last_Name = $row->fieldData->$artist_last_prop;
+		$row->Designer_First_Name = $row->fieldData->$designer_first_prop;
+		$row->Designer_Middle_Name = $row->fieldData->$designer_middle_prop;
+		$row->Designer_Last_Name = $row->fieldData->$designer_last_prop;
+		$row->Photographer_First_Name = $row->fieldData->$photo_first_prop;
+		$row->Photographer_Middle_Name = $row->fieldData->$photo_middle_prop;
+		$row->Photographer_Last_Name = $row->fieldData->$photo_last_prop;
+		$row->Artist_Birth = $row->fieldData->$artist_birth_prop;
+		$row->Artist_Death = $row->fieldData->$artist_death_prop;
+		$row->Artist_Country = $row->fieldData->$artist_country_prop;
 		$row->Culture = $row->fieldData->Culture;
-		$row->Object_Type = $row->fieldData->Object_Type;
-		$row->Phase_Style = $row->fieldData->Phase_Style;
+		$row->Object_Type = $row->fieldData->$object_type_prop;
+		$row->Phase_Style = $row->fieldData->$phase_style_prop;
 		$row->Period = $row->fieldData->Period;
-		$row->Creation_Year = $row->fieldData->Creation_Year;
+		$row->Creation_Year = $row->fieldData->$creation_year_prop;
 		$row->Dimensions = $row->fieldData->Dimensions;
-		$row->Paper_Dimensions = $row->fieldData->Paper_Dimensions;
-		$row->Edition_Run = $row->fieldData->Edition_Run;
+		$row->Paper_Dimensions = $row->fieldData->$paper_dimensions_prop;
+		$row->Edition_Run = $row->fieldData->$edition_run_prop;
 		$row->Credit = $row->fieldData->Credit;
 		$row->Region = $row->fieldData->Region;
 		$row->Translation = $row->fieldData->Translation;
@@ -159,7 +175,7 @@ class NMMACollectionMigration extends Migration {
 	}
 
 	protected function computeImageReady($value) {
-		return intval($value);
+		return $value = ($value == 0) ? 0 : 1;
 	}
 
 	protected function trimTitle($value) {
