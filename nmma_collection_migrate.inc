@@ -149,13 +149,9 @@ class NMMACollectionMigration extends Migration {
 		$filename_prop = 'permcoll_IMAGES::webImageName';
 		$origin_prop = 'permcoll_IMAGES~recordID::webImage';
 
-		// Migration::displayMessage( print_r( $opts, true ) );
-
-		/* STEP 1. create a cookie file */
+		Migration::displayMessage( 'url: ' . $row->fieldData->$origin_prop );
 
 		$ckfile = tempnam("/tmp", "CURLCOOKIE");
-
-		/* STEP 2. visit the container URL to set the cookie */
 
 		$ch = curl_init($row->fieldData->$origin_prop);
 
@@ -165,11 +161,7 @@ class NMMACollectionMigration extends Migration {
 
 		$output = curl_exec($ch);
 
-		// $cookie_string = file_get_contents( $ckfile );
-		// Migration::displayMessage( $cookie_string );
-		/* STEP 3. visit container URL again */
-
-		$ch = curl_init($imageURL);
+		$ch = curl_init($row->fieldData->$origin_prop);
 
 		curl_setopt($ch, CURLOPT_COOKIEFILE, $ckfile);
 
@@ -177,11 +169,9 @@ class NMMACollectionMigration extends Migration {
 
 		$output = curl_exec($ch);
 
-		/* STEP 4. process the image data as need it */
-
 		$imageData = base64_encode($output);
 
-		Migration::displayMessage( print_r( $imageData, true ) );
+		Migration::displayMessage( 'data: ' . print_r( $imageData, true ) );
 		// Create a stream
 		// $opts = array(
 		// 	'http'=>array(
