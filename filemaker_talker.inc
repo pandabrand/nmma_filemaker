@@ -13,7 +13,6 @@
     }
 
     public function auth() {
-
       $url = "https://$this->api_server/fmi/data/v1/databases/$this->api_database/sessions";
       $method = 'POST';
 
@@ -30,6 +29,8 @@
       ));
 
       $body = null;
+      Migration::displayMessage( print_r( $result->status_message ) );
+      Migration::displayMessage( print_r( $result->data ) );
       if($result->status_message == '200') {
         $body = json_decode($result->data);
       }
