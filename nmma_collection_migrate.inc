@@ -2,6 +2,7 @@
 
 class NMMACollectionMigration extends Migration {
 	protected $json_file;
+	protected $talker;
   public function __construct($arguments) {
     parent::__construct($arguments);
 
@@ -47,8 +48,8 @@ class NMMACollectionMigration extends Migration {
     );
 
 
-		$talker = new FileMakerTalker();
-		$this->json_file = $talker->get_items();
+		$this->talker = new FileMakerTalker();
+		$this->json_file = $this->talker->get_items();
 		// $this->json_file = $talker->json_folder . 'example-response.json';
 
 		// because migration is the WORST call the query first write it to file
@@ -148,7 +149,17 @@ class NMMACollectionMigration extends Migration {
 		$filename_prop = 'permcoll_IMAGES::webImageName';
 		$origin_prop = 'permcoll_IMAGES~recordID::webImage';
 
-		$image = file_get_contents($row->fieldData->$origin_prop); // string
+		// Create a stream
+		$opts = array(
+			'http'=>array(
+				'method' => "GET",
+				'header' => 'Authorization: Bearer ' . $this->talker->get_token()
+			)
+		);
+
+		$context = stream_context_create($opts);
+
+		$image = file_get_contents($row->fieldData->$origin_prop, false, $opts);
 		$file = file_save_data($image, 'public://' . $row->fieldData->$filename_prop, FILE_EXISTS_REPLACE);
 		// $file_info = system_retrieve_file($row->fieldData->$origin_prop, 'public://pictures/'.$row->fieldData->$filename_prop, FALSE, FILE_EXISTS_RENAME);
 
