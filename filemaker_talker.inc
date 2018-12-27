@@ -4,12 +4,15 @@
     protected $api_database;
     protected $api_layout;
     protected $api_auth;
+    protected $json_file;
+    protected $json_folder;
 
     public function __construct() {
       $this->api_server = variable_get('api_server');
       $this->api_database = variable_get('api_db');
       $this->api_layout = variable_get('api_layout');
       $this->api_auth = variable_get('api_auth');
+      $this->json_folder = DRUPAL_ROOT . '/' . 'sites/all/modules/nmma_filemaker/example/data/';
     }
 
     public function auth() {
@@ -21,7 +24,7 @@
         'Authorization' => $this->api_auth,
         'Content-Type' => 'application/json'
       );
-      Migration::displayMessage(print_r($headers, true));
+      // Migration::displayMexssage(print_r($headers, true));
 
       $result = drupal_http_request($url, array(
         'method' => $method,
@@ -47,6 +50,38 @@
 
       return $token;
     }
+
+    function get_items() {
+      $url = "https://$this->api_server/fmi/data/v1/databases/$this->api_database/layouts/$this->api_layout/_find";
+      $method = 'POST';
+
+      $headers = array(
+        'Cache-Control' => 'no-cache',
+        'Authorization' => 'Bearer ' . $this->get_token,
+        'Content-Type' => 'application/json'
+      );
+
+      $query_string = '{"query": [{"Approved_for_Web": "=Web","Main": "=Main","Image Ready": "=1"}],"sort": [{"fieldName": "title","sortOrder": "ascend"}]}';
+
+      $http_options = array(
+        'method' => $method,
+        'headers' => $headers,
+        'data' => $query_string
+      );
+
+      $result = drupal_http_request($url, $http_options);
+
+      if($result->status_message == 'OK') {
+        $body = $result->data;
+        $timestamp = date("Y-m-d_H:i:s");
+        $this->json_file = $this->json_folder .'filetalker-' . $timestamp . '.json';
+        $fh = fopen($this-json_file, 'w') or die("can't open file");
+        fwrite($fh, $body);
+        fclose($fh);
+      }
+
+    }
+
   }
 
   class FileMakerListJSON extends MigrateListJSON {

@@ -1,6 +1,7 @@
 <?php
 
 class NMMACollectionMigration extends Migration {
+	protected $json_file;
   public function __construct($arguments) {
     parent::__construct($arguments);
 
@@ -45,13 +46,20 @@ class NMMACollectionMigration extends Migration {
       'permcoll_IMAGES::webImageName' => t('Web Image Name'),
     );
 
-		$json_folder = DRUPAL_ROOT . '/' . 'sites/all/modules/nmma_filemaker/example/data/';
-		$json_file = $json_folder . 'example-response.json';
 
 		$talker = new FileMakerTalker();
-		Migration::displayMessage(print_r($talker->get_token(), true));
+		if( empty( $this->json_file ) ) {
+			$talker->get_items();
+			$this->json_file = $talker->json_file;
+		}
+		// $this->json_file = $talker->json_folder . 'example-response.json';
 
-		$this->source = new MigrateSourceList(new FileMakerListJSON($json_file), new FileMakerItemJSON($json_file, array()), $fields);
+		// Migration::displayMessage(print_r($talker->get_token(), true));
+
+		// because migration is the WORST call the query first write it to file
+		// THEN use this because, uugggghhhhhh
+
+		$this->source = new MigrateSourceList(new FileMakerListJSON($this->json_file), new FileMakerItemJSON($this->json_file, array()), $fields);
 		// $this->source = new MigrateSourceJSON($json_file, 'recordId', $fields, array('reader_class' => 'FileMakerJSONReader'));
     $this->destination = new MigrateDestinationNode('nmma_collection_item_json');
 
