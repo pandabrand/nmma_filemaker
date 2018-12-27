@@ -29,9 +29,7 @@
       ));
 
       $body = null;
-      Migration::displayMessage( print_r( $result->status_message ) );
-      Migration::displayMessage( print_r( $result->data ) );
-      if($result->status_message == '200') {
+      if($result->status_message == 'OK') {
         $body = json_decode($result->data);
       }
 
