@@ -149,19 +149,48 @@ class NMMACollectionMigration extends Migration {
 		$filename_prop = 'permcoll_IMAGES::webImageName';
 		$origin_prop = 'permcoll_IMAGES~recordID::webImage';
 
+		Migration::displayMessage( print_r( $opts, true ) );
+
+		/* STEP 1. create a cookie file */
+
+		$ckfile = tempnam("/tmp", "CURLCOOKIE");
+
+		/* STEP 2. visit the container URL to set the cookie */
+
+		$ch = curl_init($row->fieldData->$origin_prop);
+
+		curl_setopt($ch, CURLOPT_COOKIEJAR, $ckfile);
+
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+		$output = curl_exec($ch);
+
+		Migration::displayMessage( print_r( $ckfile, true ) );
+		/* STEP 3. visit container URL again */
+
+		// $ch = curl_init($imageURL);
+
+		// curl_setopt($ch, CURLOPT_COOKIEFILE, $ckfile);
+
+		// curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+		// $output = curl_exec($ch);
+
+		/* STEP 4. process the image data as need it */
+
+		// $imageData = base64_encode($output);
+
 		// Create a stream
 		$opts = array(
 			'http'=>array(
 				'method' => "GET",
-				'header' => 'Authorization: Bearer ' . $this->talker->get_token()
+				'cookie' => printf($ckfile)
 			)
 		);
 
-		Migration::displayMessage( print_r( $opts, true ) );
-
 		$context = stream_context_create($opts);
 
-		$image = file_get_contents($row->fieldData->$origin_prop);//, false, $context);
+		$image = file_get_contents($row->fieldData->$origin_prop, false, $context);
 		$file = file_save_data($image, 'public://' . $row->fieldData->$filename_prop, FILE_EXISTS_REPLACE);
 		// $file_info = system_retrieve_file($row->fieldData->$origin_prop, 'public://pictures/'.$row->fieldData->$filename_prop, FALSE, FILE_EXISTS_RENAME);
 
