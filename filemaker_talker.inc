@@ -13,6 +13,7 @@
       $this->api_layout = variable_get('api_layout');
       $this->api_auth = variable_get('api_auth');
       $this->json_folder = DRUPAL_ROOT . '/' . 'sites/all/modules/nmma_filemaker/example/data/';
+      $this->json_file = '';
     }
 
     public function auth() {
@@ -74,10 +75,15 @@
       if($result->status_message == 'OK') {
         $body = $result->data;
         $timestamp = date("Y-m-d_H:i:s");
-        $this->json_file = $this->json_folder .'filetalker-' . $timestamp . '.json';
+        $this->json_file = $this->json_folder . $timestamp . '-filetalker.json';
         $fh = fopen($this-json_file, 'w') or die("can't open file");
         fwrite($fh, $body);
         fclose($fh);
+
+        return $this->json_file;
+      } else {
+        Migration::displayMessage($result->status_message);
+        Migration::displayMessage($result->data);
       }
 
     }
