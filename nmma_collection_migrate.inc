@@ -165,7 +165,8 @@ class NMMACollectionMigration extends Migration {
 
 		$output = curl_exec($ch);
 
-		Migration::displayMessage( print_r( $ckfile, true ) );
+		$cookie_string = file_get_contents( $ckfile );
+		Migration::displayMessage( $cookie_string );
 		/* STEP 3. visit container URL again */
 
 		// $ch = curl_init($imageURL);
@@ -184,7 +185,7 @@ class NMMACollectionMigration extends Migration {
 		$opts = array(
 			'http'=>array(
 				'method' => "GET",
-				'cookie' => printf($ckfile)
+				'cookie' => $cookie_string
 			)
 		);
 
