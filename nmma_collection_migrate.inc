@@ -163,7 +163,6 @@ class NMMACollectionMigration extends Migration {
 
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-		Migration::displayMessage( print_r( $ch, true ) );
 		$output = curl_exec($ch);
 
 		// $cookie_string = file_get_contents( $ckfile );
@@ -182,6 +181,7 @@ class NMMACollectionMigration extends Migration {
 
 		$imageData = base64_encode($output);
 
+		Migration::displayMessage( print_r( $imageData, true ) );
 		// Create a stream
 		// $opts = array(
 		// 	'http'=>array(
