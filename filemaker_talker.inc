@@ -58,7 +58,7 @@
 
       $headers = array(
         'Cache-Control' => 'no-cache',
-        'Authorization' => 'Bearer ' . $this->get_token,
+        'Authorization' => 'Bearer ' . $this->get_token(),
         'Content-Type' => 'application/json'
       );
 
