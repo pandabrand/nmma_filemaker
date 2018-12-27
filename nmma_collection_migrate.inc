@@ -116,7 +116,7 @@ class NMMACollectionMigration extends Migration {
 		$this->addFieldMapping('field_item_image:value','origin');
 		// use existing files
 		$this->addFieldMapping('field_item_image:file_replace')->defaultValue(FILE_EXISTS_REPLACE);
-		$this->addFieldMapping('field_item_image:image_alt','Title')->xpath('Title');
+		$this->addFieldMapping('field_item_image:image_alt','Title');
 
 	}
 
