@@ -60,7 +60,7 @@
         'Content-Type' => 'application/json'
       );
 
-      $query_string = '{"query": [{"Approved_for_Web": "=Web","Main": "=Main"}],"sort": [{"fieldName": "title","sortOrder": "ascend"}]}';
+      $query_string = '{"query": [{"Approved_for_Web": "=Web","Main": "=Main","Image Ready": "=1"}],"sort": [{"fieldName": "title","sortOrder": "ascend"}]}';
 
       $http_options = array(
         'method' => $method,
