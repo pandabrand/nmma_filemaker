@@ -157,6 +157,8 @@ class NMMACollectionMigration extends Migration {
 			)
 		);
 
+		Migration::displayMessage( print_r( $opts, true ) );
+
 		$context = stream_context_create($opts);
 
 		$image = file_get_contents($row->fieldData->$origin_prop, false, $context);
