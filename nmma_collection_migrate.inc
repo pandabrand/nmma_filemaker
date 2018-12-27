@@ -111,7 +111,7 @@ class NMMACollectionMigration extends Migration {
 		$this->addFieldMapping('field_media', 'Media');
 
 		// $this->addFieldMapping('field_item_image:file_class')->defaultValue('MigrateFileUri');
-		$this->addFieldMapping('field_item_image:source_dir')->defaultValue('public://pictures/');
+		$this->addFieldMapping('field_item_image:source_dir')->defaultValue('public://');
 		// $this->addFieldMapping('field_item_image:source_path', 'origin');
 		// $this->addFieldMapping('field_item_image', 'image_name');
 		$this->addFieldMapping('field_item_image', 'image_name');
@@ -148,6 +148,10 @@ class NMMACollectionMigration extends Migration {
 		$filename_prop = 'permcoll_IMAGES::webImageName';
 		$origin_prop = 'permcoll_IMAGES~recordID::webImage';
 
+		$image = file_get_contents($row->fieldData->$origin_prop); // string
+		$file = file_save_data($image, 'public://' . $row->fieldData->$filename_prop, FILE_EXISTS_REPLACE);
+		// $file_info = system_retrieve_file($row->fieldData->$origin_prop, 'public://pictures/'.$row->fieldData->$filename_prop, FALSE, FILE_EXISTS_RENAME);
+
 		$row->Title = $row->fieldData->Title;
 		$row->Accession_number = $row->fieldData->$accession_num_prop;
 		$row->Accession_Part = $row->fieldData->accession_part_prop;
@@ -180,7 +184,6 @@ class NMMACollectionMigration extends Migration {
 		$row->image_name = $row->fieldData->$filename_prop;
 		$row->origin = $row->fieldData->$origin_prop;
 
-		$file_info = system_retrieve_file($row->origin, 'public://pictures/'.$row->image_name, FALSE, FILE_EXISTS_RENAME);
 
 		Migration::displayMessage( print_r( $file_info, true ) );
 
