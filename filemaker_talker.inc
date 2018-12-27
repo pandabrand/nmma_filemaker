@@ -12,7 +12,7 @@
       $this->api_auth = variable_get('api_auth');
     }
 
-    public function getToken() {
+    public function auth() {
 
       $url = "https://$this->api_server/fmi/data/v1/databases/$this->api_database/sessions";
       $method = 'POST';
@@ -29,19 +29,26 @@
         'headers' => $headers
       ));
 
-      $body = $result->data;
-      // try {
-      //   $response = $request->send();
-      //   $body = $response->getBody();
-      //   watchdog('migrate_logging', '<pre>' . $body . '</pre>', WATCHDOG_NOTICE);
-      // } catch (HttpException $ex) {
-      //   watchdog('migrate_logging', '<pre>error: ' . $ex . '</pre>', WATCHDOG_NOTICE);
-      //   echo $ex;
-      // }
+      $body = null;
+      if($result->status_message == '200') {
+        $body = json_decode($result->data);
+      }
 
       return $body;
     }
   }
+
+	function get_token() {
+		if ( $cached_token = cache_get('fm_token', 'cache' ) ) {
+      $token = $cached_token->data;
+    } else {
+      $auth = $this->auth();
+			$token = $auth->response->token;
+      cache_set('fm_token', $token, 'cache', time() + 360);
+    }
+
+		return $token;
+	}
 
   class FileMakerListJSON extends MigrateListJSON {
     /**
