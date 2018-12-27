@@ -49,7 +49,7 @@ class NMMACollectionMigration extends Migration {
 		$json_file = $json_folder . 'example-response.json';
 
 		$talker = new FileMakerTalker();
-		Migration::displayMessage(print_r($talker->getToken(), true));
+		Migration::displayMessage(print_r($talker->get_token(), true));
 
 		$this->source = new MigrateSourceList(new FileMakerListJSON($json_file), new FileMakerItemJSON($json_file, array()), $fields);
 		// $this->source = new MigrateSourceJSON($json_file, 'recordId', $fields, array('reader_class' => 'FileMakerJSONReader'));
