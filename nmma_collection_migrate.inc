@@ -165,34 +165,34 @@ class NMMACollectionMigration extends Migration {
 
 		$output = curl_exec($ch);
 
-		$cookie_string = file_get_contents( $ckfile );
-		Migration::displayMessage( $cookie_string );
+		// $cookie_string = file_get_contents( $ckfile );
+		// Migration::displayMessage( $cookie_string );
 		/* STEP 3. visit container URL again */
 
-		// $ch = curl_init($imageURL);
+		$ch = curl_init($imageURL);
 
-		// curl_setopt($ch, CURLOPT_COOKIEFILE, $ckfile);
+		curl_setopt($ch, CURLOPT_COOKIEFILE, $ckfile);
 
-		// curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-		// $output = curl_exec($ch);
+		$output = curl_exec($ch);
 
 		/* STEP 4. process the image data as need it */
 
-		// $imageData = base64_encode($output);
+		$imageData = base64_encode($output);
 
 		// Create a stream
-		$opts = array(
-			'http'=>array(
-				'method' => "GET",
-				'cookie' => $cookie_string
-			)
-		);
+		// $opts = array(
+		// 	'http'=>array(
+		// 		'method' => "GET",
+		// 		'cookie' => $cookie_string
+		// 	)
+		// );
 
-		$context = stream_context_create($opts);
+		// $context = stream_context_create($opts);
 
-		$image = file_get_contents($row->fieldData->$origin_prop, false, $context);
-		$file = file_save_data($image, 'public://' . $row->fieldData->$filename_prop, FILE_EXISTS_REPLACE);
+		// $image = file_get_contents($row->fieldData->$origin_prop, false, $context);
+		$file = file_save_data($imageData, 'public://' . $row->fieldData->$filename_prop, FILE_EXISTS_REPLACE);
 		// $file_info = system_retrieve_file($row->fieldData->$origin_prop, 'public://pictures/'.$row->fieldData->$filename_prop, FALSE, FILE_EXISTS_RENAME);
 
 		$row->Title = $row->fieldData->Title;
