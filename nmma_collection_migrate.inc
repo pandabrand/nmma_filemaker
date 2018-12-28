@@ -112,8 +112,8 @@ class NMMACollectionMigration extends Migration {
 		$this->addFieldMapping('field_media', 'Media');
 
 		$arguments = MigrateFileFieldHandler::arguments( 'public://', 'file_link' );
-		$this->addFieldMapping('field_item_image', 'image_name')->arguments($arguments);
-		// $this->addFieldMapping('field_item_image:file_class')->defaultValue('MigrateFileUri');
+		$this->addFieldMapping('field_item_image', 'image_name');
+		// $this->addFieldMapping('field_item_image:file_class')->defaultValue('MigrateImageFieldHandler');
 		// $this->addFieldMapping('field_item_image:source_dir')->defaultValue('public://');
 		// $this->addFieldMapping('field_item_image:source_path', 'origin');
 		// $this->addFieldMapping('field_item_image', 'image_name');

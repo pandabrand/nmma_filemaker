@@ -156,3 +156,42 @@
       }
     }
   }
+
+  class MigrateNMMAImageFieldHandler extends MigrateFieldHandler {
+    public function __construct() {
+      // This handler will take care of all the simple core field types
+      $this->registerTypes(array('image'));
+    }
+
+    // Here, we take a simple array of values (for an integer field, it might look like
+    // array(35, -23, 85738)
+    public function prepare($entity, array $field_info, array $instance, array $values) {
+      $migration = Migration::currentMigration();
+
+      Migration::displayMessage('values: ' . print_r($values, true));
+      $arguments = (isset($values['arguments']))? $values['arguments']: array();
+
+      $filename = $values[0];
+      $query = new EntityFieldQuery();
+      $result = $query->entityCondition('entity_type', 'file')
+        ->propertyCondition('filename', $filename)
+        ->execute();
+      // if you are guaranteed there is exactly one result, then:
+      $file_object = reset($result['file']);
+      $fid = $file_object->fid;
+      // In Drupal 7, field values are indexed by language, which can be specified
+      // at various levels - this member implemented in MigrateFieldHandler works
+      // out which language to use, applying appropriate defaults
+      $language = $this->getFieldLanguage($entity, $field_info, $arguments);
+      // Setup the standard Field API array for saving.
+      $delta = 0;
+      // foreach ($values as $value) {
+        $return[$language][$delta]['fid'] = $fid;
+      //   $delta++;
+      // }
+      if (!isset($return)) {
+        $return = NULL;
+      }
+      return $return;
+    }
+  }
