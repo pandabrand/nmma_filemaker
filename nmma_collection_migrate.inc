@@ -111,14 +111,15 @@ class NMMACollectionMigration extends Migration {
 		$this->addFieldMapping('field_translation', 'Translation');
 		$this->addFieldMapping('field_media', 'Media');
 
+		$arguments = MigrateFileFieldHandler::arguments( 'public://', 'file_link' );
+		$this->addFieldMapping('field_item_image', 'image_name')->arguments($arguments);
 		// $this->addFieldMapping('field_item_image:file_class')->defaultValue('MigrateFileUri');
-		$this->addFieldMapping('field_item_image:source_dir')->defaultValue('public://');
+		// $this->addFieldMapping('field_item_image:source_dir')->defaultValue('public://');
 		// $this->addFieldMapping('field_item_image:source_path', 'origin');
 		// $this->addFieldMapping('field_item_image', 'image_name');
-		$this->addFieldMapping('field_item_image', 'image_name');
-		$this->addFieldMapping('field_item_image:image_alt','Title');
-		$this->addFieldMapping('field_item_image:title', 'Title');
-		$this->addFieldMapping('field_item_image:file_replace')->defaultValue(FILE_EXISTS_REPLACE);
+		// $this->addFieldMapping('field_item_image:image_alt','Title');
+		// $this->addFieldMapping('field_item_image:title', 'Title');
+		// $this->addFieldMapping('field_item_image:file_replace')->defaultValue(FILE_EXISTS_REPLACE);
 	}
 
 	public function prepareRow($row) {
@@ -149,8 +150,6 @@ class NMMACollectionMigration extends Migration {
 		$filename_prop = 'permcoll_IMAGES::webImageName';
 		$origin_prop = 'permcoll_IMAGES~recordID::webImage';
 
-		Migration::displayMessage( 'url: ' . $row->fieldData->$origin_prop );
-
 		$ckfile = tempnam("/tmp", "CURLCOOKIE");
 
 		$ch = curl_init($row->fieldData->$origin_prop);
@@ -171,7 +170,6 @@ class NMMACollectionMigration extends Migration {
 
 		$imageData = base64_encode($output);
 
-		Migration::displayMessage( 'data: ' . print_r( $imageData, true ) );
 		// Create a stream
 		// $opts = array(
 		// 	'http'=>array(
@@ -219,9 +217,9 @@ class NMMACollectionMigration extends Migration {
 		$row->origin = $row->fieldData->$origin_prop;
 
 
-		Migration::displayMessage( print_r( $file_info, true ) );
+		Migration::displayMessage( print_r( $file, true ) );
 
-		return TRUE;
+		return true;
 	}
 
 	protected function computeApprovedForWeb($value) {
