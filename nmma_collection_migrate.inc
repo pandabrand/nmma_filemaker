@@ -241,8 +241,10 @@ class NMMACollectionMigration extends Migration {
 	}
 
 	protected function computeImageFileName($value) {
-		$wrapper = file_stream_wrapper_get_instance_by_uri('public://');
-		$image_incoming = $wrapper->realpath().$value;
-		return $image_incoming;
+		$wrapper = file_stream_wrapper_get_instance_by_uri('public://'.$value);
+		$image_incoming = $wrapper->realpath();
+		$out_value = mb_check_encoding($image_incoming, 'UTF-8') ? $image_incoming : utf8_encoding($image_incoming);
+		Migration::displayMessage('what: ' . $out_value);
+		return $out_value;
 	}
 }
