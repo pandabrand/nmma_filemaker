@@ -163,8 +163,6 @@
       $this->registerTypes(array('image'));
     }
 
-    // Here, we take a simple array of values (for an integer field, it might look like
-    // array(35, -23, 85738)
     public function prepare($entity, array $field_info, array $instance, array $values) {
       $migration = Migration::currentMigration();
 

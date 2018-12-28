@@ -47,6 +47,7 @@ class NMMACollectionMigration extends Migration {
       'permcoll_IMAGES::webImageName' => t('Web Image Name'),
     );
 
+		$images_destination = 'public://collection/images/';
 
 		$this->talker = new FileMakerTalker();
 		$this->json_file = $this->talker->get_items();
@@ -111,15 +112,14 @@ class NMMACollectionMigration extends Migration {
 		$this->addFieldMapping('field_translation', 'Translation');
 		$this->addFieldMapping('field_media', 'Media');
 
-		// $arguments = MigrateFileFieldHandler::arguments( 'public://', 'file_link' );
-		$this->addFieldMapping('field_item_image', 'image_name');
-		// $this->addFieldMapping('field_item_image:file_class')->defaultValue('MigrateImageFieldHandler');
-		// $this->addFieldMapping('field_item_image:source_dir')->defaultValue('public://');
-		// $this->addFieldMapping('field_item_image:source_path', 'origin');
 		// $this->addFieldMapping('field_item_image', 'image_name');
-		// $this->addFieldMapping('field_item_image:image_alt','Title');
-		// $this->addFieldMapping('field_item_image:title', 'Title');
-		// $this->addFieldMapping('field_item_image:file_replace')->defaultValue(FILE_EXISTS_REPLACE);
+		$this->addFieldMapping('field_item_image:destination_dir')->defaultValue($images_destination);
+		// use callback to find a matching file
+		$this->addFieldMapping('field_item_image','image_name')->callbacks(array($this,'computeImageFileName'));
+		// use existing files
+		$this->addFieldMapping('field_item_image:file_replace')->defaultValue(FILE_EXISTS_REPLACE);
+		$this->addFieldMapping('field_item_image:file_class')->defaultValue('MigrateFileUri');
+		$this->addFieldMapping('field_item_image:image_alt','Title');
 	}
 
 	public function prepareRow($row) {
@@ -217,7 +217,7 @@ class NMMACollectionMigration extends Migration {
 		$row->origin = $row->fieldData->$origin_prop;
 
 
-		Migration::displayMessage( print_r( $file, true ) );
+		// Migration::displayMessage( print_r( $file, true ) );
 
 		return true;
 	}
@@ -238,5 +238,11 @@ class NMMACollectionMigration extends Migration {
 	public function postImport() {
 		parent::postImport();
 		file_delete($this->json_file);
-  }
+	}
+
+	protected function computeImageFileName($value) {
+		$wrapper = file_stream_wrapper_get_instance_by_uri('public://');
+		$image_incoming = $wrapper->realpath().$value;
+		return $image_incoming;
+	}
 }
