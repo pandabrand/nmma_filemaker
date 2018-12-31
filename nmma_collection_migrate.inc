@@ -150,12 +150,10 @@ class NMMACollectionMigration extends Migration {
 		$origin_prop = 'permcoll_IMAGES~recordID::webImage';
 
 		$jar = new \GuzzleHttp\Cookie\CookieJar;
-		$client = new \GuzzleHttp\Client([
-			'base_uri' => $row->fieldData->$origin_prop,
-		]);
+		$client = new \GuzzleHttp\Client();
 
 		$resource = fopen('public://' . $row->fieldData->$filename_prop, 'w');
-		$response = $client->request('GET', '/', ['cookies' => $jar, 'sink' => $resource]);
+		$response = $client->request('GET', $row->fieldData->$origin_prop, ['cookies' => $jar, 'sink' => $resource]);
 		$code = $response->getStatusCode(); // 200
 		$reason = $response->getReasonPhrase(); // OK
 		Migration::displayMessage( $code . ' and reason: ' . $reason);
