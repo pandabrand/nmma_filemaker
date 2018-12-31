@@ -151,7 +151,7 @@ class NMMACollectionMigration extends Migration {
 
 		$jar = new \GuzzleHttp\Cookie\CookieJar;
 		$client = new \GuzzleHttp\Client([
-			'base_uri' => '$row->fieldData->$origin_prop',
+			'base_uri' => $row->fieldData->$origin_prop,
 		]);
 
 		$resource = fopen('public://' . $row->fieldData->$filename_prop, 'w');
