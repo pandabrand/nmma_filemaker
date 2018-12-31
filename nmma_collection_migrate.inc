@@ -1,5 +1,4 @@
 <?php
-
 class NMMACollectionMigration extends Migration {
 	protected $json_file;
 	protected $talker;
@@ -150,25 +149,36 @@ class NMMACollectionMigration extends Migration {
 		$filename_prop = 'permcoll_IMAGES::webImageName';
 		$origin_prop = 'permcoll_IMAGES~recordID::webImage';
 
-		$ckfile = tempnam("/tmp", "CURLCOOKIE");
+		$jar = new \GuzzleHttp\Cookie\CookieJar;
+		$client = new \GuzzleHttp\Client([
+			'base_uri' => '$row->fieldData->$origin_prop',
+		]);
 
-		$ch = curl_init($row->fieldData->$origin_prop);
+		$resource = fopen('public://' . $row->fieldData->$filename_prop, 'w');
+		$response = $client->request('GET', '/', ['cookies' => $jar, 'sink' => $resource]);
+		$code = $response->getStatusCode(); // 200
+		$reason = $response->getReasonPhrase(); // OK
+		Migration::displayMessage( $code . ' and reason: ' . $reason);
 
-		curl_setopt($ch, CURLOPT_COOKIEJAR, $ckfile);
+		// $ckfile = tempnam("/tmp", "CURLCOOKIE");
 
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		// $ch = curl_init($row->fieldData->$origin_prop);
 
-		$output = curl_exec($ch);
+		// curl_setopt($ch, CURLOPT_COOKIEJAR, $ckfile);
 
-		$ch = curl_init($row->fieldData->$origin_prop);
+		// curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-		curl_setopt($ch, CURLOPT_COOKIEFILE, $ckfile);
+		// $output = curl_exec($ch);
 
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		// $ch = curl_init($row->fieldData->$origin_prop);
 
-		$output = curl_exec($ch);
+		// curl_setopt($ch, CURLOPT_COOKIEFILE, $ckfile);
 
-		$imageData = base64_encode($output);
+		// curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+		// $output = curl_exec($ch);
+
+		// $imageData = base64_encode($output);
 
 		// Create a stream
 		// $opts = array(
@@ -181,7 +191,7 @@ class NMMACollectionMigration extends Migration {
 		// $context = stream_context_create($opts);
 
 		// $image = file_get_contents($row->fieldData->$origin_prop, false, $context);
-		$file = file_save_data($imageData, 'public://' . $row->fieldData->$filename_prop, FILE_EXISTS_REPLACE);
+		// $file = file_save_data($imageData, 'public://' . $row->fieldData->$filename_prop, FILE_EXISTS_REPLACE);
 		// $file_info = system_retrieve_file($row->fieldData->$origin_prop, 'public://pictures/'.$row->fieldData->$filename_prop, FALSE, FILE_EXISTS_RENAME);
 
 		$row->Title = $row->fieldData->Title;
