@@ -1,0 +1,12 @@
+<?php
+  function nmma_filemaker_cron() {
+    $last_run = variable_get('nmma_filemaker_last_cron', 0);
+    $interval = variable_get('nmma_filemaker_cron_interval', 1800);
+    if(time() - $last_run > $interval)
+    {
+      variable_set('nmma_filemaker_last_cron', time());
+      $machine_name = 'NmmaCollectionItems';
+      $migration = Migration::getInstance($machine_name);
+      $result = $migration->processImport();
+    }
+  }

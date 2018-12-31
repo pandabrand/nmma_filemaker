@@ -154,43 +154,8 @@ class NMMACollectionMigration extends Migration {
 
 		$resource = fopen('public://' . $row->fieldData->$filename_prop, 'w');
 		$response = $client->request('GET', $row->fieldData->$origin_prop, ['cookies' => $jar, 'sink' => $resource]);
-		$code = $response->getStatusCode(); // 200
-		$reason = $response->getReasonPhrase(); // OK
-		Migration::displayMessage( $code . ' and reason: ' . $reason);
-
-		// $ckfile = tempnam("/tmp", "CURLCOOKIE");
-
-		// $ch = curl_init($row->fieldData->$origin_prop);
-
-		// curl_setopt($ch, CURLOPT_COOKIEJAR, $ckfile);
-
-		// curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-		// $output = curl_exec($ch);
-
-		// $ch = curl_init($row->fieldData->$origin_prop);
-
-		// curl_setopt($ch, CURLOPT_COOKIEFILE, $ckfile);
-
-		// curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-		// $output = curl_exec($ch);
-
-		// $imageData = base64_encode($output);
-
-		// Create a stream
-		// $opts = array(
-		// 	'http'=>array(
-		// 		'method' => "GET",
-		// 		'cookie' => $cookie_string
-		// 	)
-		// );
-
-		// $context = stream_context_create($opts);
-
-		// $image = file_get_contents($row->fieldData->$origin_prop, false, $context);
-		// $file = file_save_data($imageData, 'public://' . $row->fieldData->$filename_prop, FILE_EXISTS_REPLACE);
-		// $file_info = system_retrieve_file($row->fieldData->$origin_prop, 'public://pictures/'.$row->fieldData->$filename_prop, FALSE, FILE_EXISTS_RENAME);
+		// $code = $response->getStatusCode(); // 200
+		// $reason = $response->getReasonPhrase(); // OK
 
 		$row->Title = $row->fieldData->Title;
 		$row->Accession_number = $row->fieldData->$accession_num_prop;
@@ -245,14 +210,13 @@ class NMMACollectionMigration extends Migration {
 
 	public function postImport() {
 		parent::postImport();
-		file_delete($this->json_file);
+		file_delete($this->json_file, TRUE);
 	}
 
 	protected function computeImageFileName($value) {
 		$wrapper = file_stream_wrapper_get_instance_by_uri('public://'.$value);
 		$image_incoming = $wrapper->realpath();
 		$out_value = mb_check_encoding($image_incoming, 'UTF-8') ? $image_incoming : utf8_encoding($image_incoming);
-		Migration::displayMessage('what: ' . $out_value);
 		return $out_value;
 	}
 }
