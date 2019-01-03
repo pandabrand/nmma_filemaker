@@ -153,8 +153,11 @@ class NMMACollectionMigration extends Migration {
 		$client = new \GuzzleHttp\Client();
 
 		// if(!empty($row->fieldData->$filename_prop)) {
-			$resource = fopen('public://' . $row->fieldData->$filename_prop, 'w');
-			$response = $client->request('GET', $row->fieldData->$origin_prop, ['cookies' => $jar, 'sink' => $resource]);
+			$image_uri = $row->fieldData->$filename_prop;
+			if($image_uri) {
+				$resource = fopen('public://' . $image_uri, 'w');
+				$response = $client->request('GET', $row->fieldData->$origin_prop, ['cookies' => $jar, 'sink' => $resource]);
+			}
 			// $code = $response->getStatusCode(); // 200
 			// $reason = $response->getReasonPhrase(); // OK
 		// }
