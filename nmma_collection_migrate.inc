@@ -152,10 +152,12 @@ class NMMACollectionMigration extends Migration {
 		$jar = new \GuzzleHttp\Cookie\CookieJar;
 		$client = new \GuzzleHttp\Client();
 
-		$resource = fopen('public://' . $row->fieldData->$filename_prop, 'w');
-		$response = $client->request('GET', $row->fieldData->$origin_prop, ['cookies' => $jar, 'sink' => $resource]);
-		// $code = $response->getStatusCode(); // 200
-		// $reason = $response->getReasonPhrase(); // OK
+		if(!empty($row->fieldData->$filename_prop)) {
+			$resource = fopen('public://' . $row->fieldData->$filename_prop, 'w');
+			$response = $client->request('GET', $row->fieldData->$origin_prop, ['cookies' => $jar, 'sink' => $resource]);
+			// $code = $response->getStatusCode(); // 200
+			// $reason = $response->getReasonPhrase(); // OK
+		}
 
 		$row->Title = $row->fieldData->Title;
 		$row->Accession_number = $row->fieldData->$accession_num_prop;
@@ -214,9 +216,13 @@ class NMMACollectionMigration extends Migration {
 	}
 
 	protected function computeImageFileName($value) {
-		$wrapper = file_stream_wrapper_get_instance_by_uri('public://'.$value);
-		$image_incoming = $wrapper->realpath();
-		$out_value = mb_check_encoding($image_incoming, 'UTF-8') ? $image_incoming : utf8_encoding($image_incoming);
+		$out_value = null;
+
+		if(!empty($value)) {
+			$wrapper = file_stream_wrapper_get_instance_by_uri('public://'.$value);
+			$image_incoming = $wrapper->realpath();
+			$out_value = mb_check_encoding($image_incoming, 'UTF-8') ? $image_incoming : utf8_encoding($image_incoming);
+		}
 		return $out_value;
 	}
 }
