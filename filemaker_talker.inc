@@ -39,13 +39,13 @@
     }
 
     function get_token() {
-      if ( $cached_token = cache_get('fm_token', 'cache' ) ) {
-        $token = $cached_token->data;
-      } else {
+      // if ( $cached_token = cache_get('fm_token', 'cache' ) ) {
+      //   $token = $cached_token->data;
+      // } else {
         $auth = $this->auth();
         $token = $auth->response->token;
-        cache_set('fm_token', $token, 'cache', time() + 30);
-      }
+      //   cache_set('fm_token', $token, 'cache', time() + 30);
+      // }
 
       return $token;
     }
