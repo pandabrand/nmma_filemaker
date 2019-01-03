@@ -210,7 +210,7 @@ class NMMACollectionMigration extends Migration {
 
 	public function postImport() {
 		parent::postImport();
-		file_delete($this->json_file, TRUE);
+		// file_delete($this->json_file, TRUE);
 	}
 
 	protected function computeImageFileName($value) {
