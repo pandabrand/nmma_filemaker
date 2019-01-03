@@ -216,13 +216,13 @@ class NMMACollectionMigration extends Migration {
 	}
 
 	protected function computeImageFileName($value) {
-		$out_value = null;
+		// $out_value = null;
 
-		if(!empty($value)) {
+		// if(!empty($value)) {
 			$wrapper = file_stream_wrapper_get_instance_by_uri('public://'.$value);
 			$image_incoming = $wrapper->realpath();
 			$out_value = mb_check_encoding($image_incoming, 'UTF-8') ? $image_incoming : utf8_encoding($image_incoming);
-		}
+		// }
 		return $out_value;
 	}
 }
