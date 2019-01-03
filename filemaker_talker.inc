@@ -44,7 +44,7 @@
       } else {
         $auth = $this->auth();
         $token = $auth->response->token;
-        cache_set('fm_token', $token, 'cache', time() + 90);
+        cache_set('fm_token', $token, 'cache', time() + 30);
       }
 
       return $token;
