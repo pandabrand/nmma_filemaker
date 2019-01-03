@@ -152,12 +152,12 @@ class NMMACollectionMigration extends Migration {
 		$jar = new \GuzzleHttp\Cookie\CookieJar;
 		$client = new \GuzzleHttp\Client();
 
-		if(!empty($row->fieldData->$filename_prop)) {
+		// if(!empty($row->fieldData->$filename_prop)) {
 			$resource = fopen('public://' . $row->fieldData->$filename_prop, 'w');
 			$response = $client->request('GET', $row->fieldData->$origin_prop, ['cookies' => $jar, 'sink' => $resource]);
 			// $code = $response->getStatusCode(); // 200
 			// $reason = $response->getReasonPhrase(); // OK
-		}
+		// }
 
 		$row->Title = $row->fieldData->Title;
 		$row->Accession_number = $row->fieldData->$accession_num_prop;
