@@ -154,7 +154,7 @@ class NMMACollectionMigration extends Migration {
 
 		// if(!empty($row->fieldData->$filename_prop)) {
 			$image_uri = $row->fieldData->$filename_prop;
-			Migration::displayMessage('image: ' . $image_uri);
+			// Migration::displayMessage('image: ' . $image_uri);
 			if($image_uri) {
 				$resource = fopen('public://' . $image_uri, 'w');
 				$response = $client->request('GET', $row->fieldData->$origin_prop, ['cookies' => $jar, 'sink' => $resource]);
