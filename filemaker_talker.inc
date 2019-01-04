@@ -68,7 +68,7 @@
         'data' => $query_string
       );
 
-      Migration::displayMessage( 'headers: ' . print_r( $http_options, true ) );
+      // Migration::displayMessage( 'headers: ' . print_r( $http_options, true ) );
       $result = drupal_http_request($url, $http_options);
 
       if($result->status_message == 'OK') {
@@ -116,7 +116,6 @@
       }
       if ($json) {
         $data = drupal_json_decode($json);
-        Migration::displayMessage( 'json: ' . print_r( $data, true ) );
           if ($data) {
           $count = count($data['response']['data']);
         }
