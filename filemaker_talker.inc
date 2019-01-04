@@ -60,7 +60,7 @@
         'Content-Type' => 'application/json'
       );
 
-      $query_string = '{"query": [{"Approved_for_Web": "=Web","Main": "=Main"}],"sort": [{"fieldName": "image ready","sortOrder": "descend"}],"limit": 20000}';
+      $query_string = '{"query": [{"Approved_for_Web": "=Web","Main": "=Main"}],"sort": [{"fieldName": "image ready","sortOrder": "descend"}],"limit": 12000}';
 
       $http_options = array(
         'method' => $method,
@@ -68,7 +68,7 @@
         'data' => $query_string
       );
 
-      // Migration::displayMessage( print_r( $http_options, true ) );
+      Migration::displayMessage( print_r( $http_options, true ) );
       $result = drupal_http_request($url, $http_options);
 
       if($result->status_message == 'OK') {
