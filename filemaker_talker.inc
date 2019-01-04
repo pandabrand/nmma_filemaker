@@ -116,6 +116,7 @@
       }
       if ($json) {
         $data = drupal_json_decode($json);
+        Migration::displayMessage( print_r( $data, true ) );
           if ($data) {
           $count = count($data['response']['data']);
         }
