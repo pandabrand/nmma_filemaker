@@ -74,6 +74,7 @@ class NMMACollectionMigration extends Migration {
 		);
 
 		$this->addFieldMapping('uid')->defaultValue(100223);
+		$this->addFieldMapping('field_record_id', 'recordId');
 		$this->addFieldMapping('title', 'Title')->callbacks(array($this, 'trimTitle'));
 		$this->addFieldMapping('field_full_title', 'Title');
 		$this->addFieldMapping('field_accession_number', 'Accession_number');
@@ -92,6 +93,9 @@ class NMMACollectionMigration extends Migration {
 		$this->addFieldMapping('field_artist_birth', 'Artist_Birth');
 		$this->addFieldMapping('field_artist_death', 'Artist_Death');
 		$this->addFieldMapping('field_artist_country', 'Artist_Country');
+		$this->addFieldMapping('field_category', 'Category');
+		$this->addFieldMapping('field_category:create_term')->defaultValue(TRUE);
+		$this->addFieldMapping('field_category:ignore_case')->defaultValue(TRUE);
 		$this->addFieldMapping('field_culture', 'Culture');
 		$this->addFieldMapping('field_culture:create_term')->defaultValue(TRUE);
 		$this->addFieldMapping('field_culture:ignore_case')->defaultValue(TRUE);
@@ -167,6 +171,7 @@ class NMMACollectionMigration extends Migration {
 		$row->Accession_number = $row->fieldData->$accession_num_prop;
 		$row->Accession_Part = $row->fieldData->accession_part_prop;
 		$row->Approved_for_Web = $row->fieldData->Approved_for_Web;
+		$row->Category = $row->fieldData->Category;
 		$row->Image_Ready = $row->fieldData->$image_ready_prop;
 		$row->Artist_First_Name = $row->fieldData->$artist_first_prop;
 		$row->Artist_Middle_Name = $row->fieldData->$artist_middle_prop;
