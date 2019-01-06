@@ -201,7 +201,7 @@ class NMMACollectionMigration extends Migration {
 		$row->origin = $row->fieldData->$origin_prop;
 
 
-		Migration::displayMessage( print_r( $row, true ) );
+		// Migration::displayMessage( print_r( $row, true ) );
 
 		return true;
 	}

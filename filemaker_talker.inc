@@ -166,7 +166,7 @@
     public function prepare($entity, array $field_info, array $instance, array $values) {
       $migration = Migration::currentMigration();
 
-      Migration::displayMessage('values: ' . print_r($entity, true));
+      // Migration::displayMessage('values: ' . print_r($entity, true));
       $arguments = (isset($values['arguments']))? $values['arguments']: array();
       // In Drupal 7, field values are indexed by language, which can be specified
       // at various levels - this member implemented in MigrateFieldHandler works
