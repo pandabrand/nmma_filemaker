@@ -17,7 +17,7 @@ class NMMACollectionMigration extends Migration {
 			'Artist_Death' => t('Artist Death'),
 			'Artist_Country' => t('Artist Country'),
 			'Accession_number' => t('Accession Number'),
-			'Accession_Part' => t('Accession part'),
+			'Accession_Part' => t('Accession Part'),
 			'Object_Type' => t('Object Type'),
 			'Culture' => t('Culture'),
 			'Artist_First_Name' => t('Artist First Name'),
