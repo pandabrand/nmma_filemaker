@@ -169,7 +169,7 @@ class NMMACollectionMigration extends Migration {
 
 		$row->Title = $row->fieldData->Title;
 		$row->Accession_number = $row->fieldData->$accession_num_prop;
-		$row->Accession_Part = $row->fieldData->accession_part_prop;
+		$row->Accession_Part = $row->fieldData->$accession_part_prop;
 		$row->Approved_for_Web = $row->fieldData->Approved_for_Web;
 		$row->Category = $row->fieldData->Category;
 		$row->Image_Ready = $row->fieldData->$image_ready_prop;
