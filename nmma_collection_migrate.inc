@@ -2,11 +2,14 @@
 class NMMACollectionMigration extends Migration {
 	protected $json_file;
 	protected $talker;
+	protected $import_user;
+
   public function __construct($arguments) {
     parent::__construct($arguments);
 
     $this->description = t('Import Collection from FileMaker Cloud');
     $this->defaultLanguage = 'en';
+		$this->import_user = variable_get('import_user');
 
 		$fields = array(
 			'recordId' => t('Record ID'),
@@ -73,7 +76,7 @@ class NMMACollectionMigration extends Migration {
 			$keySchema
 		);
 
-		$this->addFieldMapping('uid')->defaultValue(100223);
+		$this->addFieldMapping('uid')->defaultValue($this->import_user);
 		$this->addFieldMapping('field_record_id', 'recordId');
 		$this->addFieldMapping('title', 'Title')->callbacks(array($this, 'trimTitle'));
 		$this->addFieldMapping('field_full_title', 'Title');
