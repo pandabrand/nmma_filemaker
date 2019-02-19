@@ -153,22 +153,20 @@ class NMMACollectionMigration extends Migration {
 		$creation_year_prop = 'Creation Year';
 		$paper_dimensions_prop = 'Paper Dimensions';
 		$edition_run_prop = 'Edition Run';
-		$filename_prop = 'permcoll_IMAGES::webImageName';
-		$origin_prop = 'permcoll_IMAGES~recordID::webImage';
+		$filename_prop = 'permcoll_IMAGES::fileName_W';
+		$origin_prop = 'permcoll_IMAGE~web::IMAGE';
 
 		$jar = new \GuzzleHttp\Cookie\CookieJar;
 		$client = new \GuzzleHttp\Client();
 
-		// if(!empty($row->fieldData->$filename_prop)) {
-			$image_uri = $row->fieldData->$filename_prop;
-			// Migration::displayMessage('image: ' . $image_uri);
-			if($image_uri) {
-				$resource = fopen('public://' . $image_uri, 'w');
-				$response = $client->request('GET', $row->fieldData->$origin_prop, ['cookies' => $jar, 'sink' => $resource]);
-			}
-			// $code = $response->getStatusCode(); // 200
-			// $reason = $response->getReasonPhrase(); // OK
-		// }
+		$image_name = $row->fieldData->$filename_prop;
+		// Migration::displayMessage('image: ' . $image_uri);
+		if(strlen($row->fieldData->$origin_prop)) {
+			$resource = fopen('public://' . $image_name, 'w');
+			$response = $client->request('GET', $row->fieldData->$origin_prop, ['cookies' => $jar, 'sink' => $resource]);
+		}
+		// $code = $response->getStatusCode(); // 200
+		// $reason = $response->getReasonPhrase(); // OK
 
 		$row->Title = $row->fieldData->Title;
 		$row->Accession_number = $row->fieldData->$accession_num_prop;

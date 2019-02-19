@@ -60,7 +60,7 @@
         'Content-Type' => 'application/json'
       );
 
-      $query_string = '{"query": [{"Approved_for_Web": "=Web","Main": "=Main", "Category": "=Photography / Digital Images"}],"sort": [{"fieldName": "image ready","sortOrder": "descend"}],"limit": 1200}';
+      $query_string = '{"query": [{"Approved_for_Web": "=Web","Main": "=Main", "Category": "=Photography"}],"sort": [{"fieldName": "image ready","sortOrder": "descend"}],"limit": 1200}';
 
       $http_options = array(
         'method' => $method,
