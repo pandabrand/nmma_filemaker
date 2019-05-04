@@ -156,6 +156,7 @@ class NMMACollectionMigration extends Migration {
 		$filename_prop = 'permcoll_IMAGES::fileName_W';
 		$origin_prop = 'permcoll_IMAGE~web::IMAGE';
 
+		Migration::displayMessage($accession_num_prop . $accession_part_prop);
 		$jar = new \GuzzleHttp\Cookie\CookieJar;
 		$client = new \GuzzleHttp\Client();
 
