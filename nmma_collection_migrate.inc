@@ -162,7 +162,7 @@ class NMMACollectionMigration extends Migration {
 		$image_name = $row->fieldData->$filename_prop;
 		// Migration::displayMessage('image: ' . $image_uri);
 		if(strlen($row->fieldData->$origin_prop)) {
-			Migration::displayMessage(drupal_realpath('public://' . $image_name));
+			Migration::displayMessage($row->fieldData->$origin_prop);
 			$resource = fopen('public://' . $image_name, 'w');
 			$response = $client->request('GET', $row->fieldData->$origin_prop, ['cookies' => $jar, 'sink' => $resource]);
 		}
