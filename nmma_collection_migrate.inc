@@ -153,10 +153,10 @@ class NMMACollectionMigration extends Migration {
 		$creation_year_prop = 'Creation Year';
 		$paper_dimensions_prop = 'Paper Dimensions';
 		$edition_run_prop = 'Edition Run';
-		$filename_prop = 'permcoll_IMAGES::fileName_c';
+		$filename_prop = 'permcoll_IMAGE::fileName_c';
 		$origin_prop = 'permcoll_IMAGE~web::IMAGE';
 
-		// Migration::displayMessage($row->fieldData->$accession_num_prop . $row->fieldData->$accession_part_prop);
+		Migration::displayMessage($row->fieldData->$accession_num_prop . $row->fieldData->$accession_part_prop);
 		$jar = new \GuzzleHttp\Cookie\CookieJar;
 		$client = new \GuzzleHttp\Client();
 
