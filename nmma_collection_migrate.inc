@@ -153,19 +153,17 @@ class NMMACollectionMigration extends Migration {
 		$creation_year_prop = 'Creation Year';
 		$paper_dimensions_prop = 'Paper Dimensions';
 		$edition_run_prop = 'Edition Run';
-		$filename_prop = 'permcoll_IMAGE::fileName_c';
+		$filename_prop = 'permcoll_IMAGE~web::fileName_c';
 		$origin_prop = 'permcoll_IMAGE~web::IMAGE';
 
-		Migration::displayMessage($row->fieldData->$accession_num_prop . $row->fieldData->$accession_part_prop);
+		// Migration::displayMessage($row->fieldData->$accession_num_prop . $row->fieldData->$accession_part_prop);
 		$jar = new \GuzzleHttp\Cookie\CookieJar;
 		$client = new \GuzzleHttp\Client();
 
 		$image_name = $row->fieldData->$filename_prop;
 		// Migration::displayMessage('image: ' . $image_uri);
 		if(strlen($row->fieldData->$origin_prop)) {
-			Migration::displayMessage($row->fieldData->$origin_prop);
-			Migration::displayMessage($row->fieldData->$filename_prop);
-			Migration::displayMessage(drupal_realpath('public://' . $image_name));
+			// Migration::displayMessage($row->fieldData->$origin_prop);
 			$resource = fopen('public://' . $image_name, 'w');
 			$response = $client->request('GET', $row->fieldData->$origin_prop, ['cookies' => $jar, 'sink' => $resource]);
 		}
