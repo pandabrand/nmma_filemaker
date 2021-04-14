@@ -15,7 +15,7 @@ class NMMACollectionMigration extends Migration {
 			'recordId' => t('Record ID'),
 			'Approved_for_Web' => t('Approved for Web'),
 			'Main' => t('Main'),
-			'Image_Ready' => t('Image ready'),
+			'ImageReady' => t('Image Ready'),
 			'Artist_Birth' => t('Artist Birth'),
 			'Artist_Death' => t('Artist Death'),
 			'Artist_Country' => t('Artist Country'),
@@ -44,6 +44,7 @@ class NMMACollectionMigration extends Migration {
 			'Dimensions' => t('Dimensions'),
 			'Paper_Dimensions' => t('Paper Dimensions'),
 			'Credit' => t('Credit'),
+			'Theme' => t('Theme'),
       'Image Name' => t('Image Name'),
       'permcoll_IMAGES~recordID::webImage' => t('Web Image Path'),
       'permcoll_IMAGES::webImageName' => t('Web Image Name'),
@@ -83,7 +84,7 @@ class NMMACollectionMigration extends Migration {
 		$this->addFieldMapping('field_accession_number', 'Accession_number');
 		$this->addFieldMapping('field_accession_part', 'Accession_Part');
 		$this->addFieldMapping('field_approved_for_web', 'Approved_for_Web')->callbacks(array($this, 'computeApprovedForWeb'));
-		$this->addFieldMapping('field_image_ready', 'Image_Ready')->callbacks(array($this, 'computeImageReady'));
+		$this->addFieldMapping('field_image_ready', 'ImageReady')->callbacks(array($this, 'computeImageReady'));
 		$this->addFieldMapping('field_artist_first_name', 'Artist_First_Name');
 		$this->addFieldMapping('field_artist_middle_name', 'Artist_Middle_Name');
 		$this->addFieldMapping('field_artist_last_name', 'Artist_Last_Name');
@@ -112,6 +113,9 @@ class NMMACollectionMigration extends Migration {
 		$this->addFieldMapping('field_paper_dimensions', 'Paper_Dimensions');
 		$this->addFieldMapping('field_edition_run', 'Edition_Run');
 		$this->addFieldMapping('field_credit', 'Credit');
+		$this->addFieldMapping('field_theme', 'Theme')->separator(',');
+		$this->addFieldMapping('field_theme:create_term')->defaultValue(TRUE);
+		$this->addFieldMapping('field_theme:ignore_case')->defaultValue(TRUE);
 		$this->addFieldMapping('field_region', 'Region');
 		$this->addFieldMapping('field_region:create_term');
 		$this->addFieldMapping('field_region:ignore_case');
@@ -175,7 +179,7 @@ class NMMACollectionMigration extends Migration {
 		$row->Accession_Part = $row->fieldData->$accession_part_prop;
 		$row->Approved_for_Web = $row->fieldData->Approved_for_Web;
 		$row->Category = $row->fieldData->Category;
-		$row->Image_Ready = $row->fieldData->$image_ready_prop;
+		$row->ImageReady = $row->fieldData->$image_ready_prop;
 		$row->Artist_First_Name = $row->fieldData->$artist_first_prop;
 		$row->Artist_Middle_Name = $row->fieldData->$artist_middle_prop;
 		$row->Artist_Last_Name = $row->fieldData->$artist_last_prop;
@@ -197,6 +201,7 @@ class NMMACollectionMigration extends Migration {
 		$row->Paper_Dimensions = $row->fieldData->$paper_dimensions_prop;
 		$row->Edition_Run = $row->fieldData->$edition_run_prop;
 		$row->Credit = $row->fieldData->Credit;
+		$row->Theme = $row->fieldData->Theme;
 		$row->Region = $row->fieldData->Region;
 		$row->Translation = $row->fieldData->Translation;
 		$row->Media = $row->fieldData->Media;
@@ -224,6 +229,7 @@ class NMMACollectionMigration extends Migration {
 
 	public function postImport() {
 		parent::postImport();
+		// automatic deletion caused chaos so, nope
 		// file_delete($this->json_file, TRUE);
 	}
 
