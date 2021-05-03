@@ -12,7 +12,7 @@ class NMMACollectionMigration extends Migration {
 		$this->import_user = variable_get('import_user');
 
 		$fields = array(
-			'recordId' => t('Record ID'),
+			'_pKey' => t('Record ID'),
 			'Approved_for_Web' => t('Approved for Web'),
 			'Main' => t('Main'),
 			'ImageReady' => t('Image Ready'),
@@ -69,7 +69,7 @@ class NMMACollectionMigration extends Migration {
 
 		$this->map = new MigrateSQLMap($this->machineName,
 			array(
-				'recordId' => array(
+				'_pKey' => array(
 					'type' => 'varchar',
 					'length' => 255,
 				),
@@ -78,7 +78,7 @@ class NMMACollectionMigration extends Migration {
 		);
 
 		$this->addFieldMapping('uid')->defaultValue($this->import_user);
-		$this->addFieldMapping('field_record_id', 'recordId');
+		$this->addFieldMapping('field_record_id', '_pKey');
 		$this->addFieldMapping('title', 'Title')->callbacks(array($this, 'trimTitle'));
 		$this->addFieldMapping('field_full_title', 'Title');
 		$this->addFieldMapping('field_accession_number', 'Accession_number');
@@ -159,6 +159,7 @@ class NMMACollectionMigration extends Migration {
 		$edition_run_prop = 'Edition Run';
 		$filename_prop = 'permcoll_IMAGE~web::fileName_c';
 		$origin_prop = 'permcoll_IMAGE~web::IMAGE';
+		$record_id_prop = '_pKey';
 
 		// Migration::displayMessage($row->fieldData->$accession_num_prop . $row->fieldData->$accession_part_prop);
 		$jar = new \GuzzleHttp\Cookie\CookieJar;
@@ -174,12 +175,13 @@ class NMMACollectionMigration extends Migration {
 		// $code = $response->getStatusCode(); // 200
 		// $reason = $response->getReasonPhrase(); // OK
 
+		$row->_pKey = $row->fieldData->_pKey;
 		$row->Title = $row->fieldData->Title;
 		$row->Accession_number = $row->fieldData->$accession_num_prop;
 		$row->Accession_Part = $row->fieldData->$accession_part_prop;
 		$row->Approved_for_Web = $row->fieldData->Approved_for_Web;
 		$row->Category = $row->fieldData->Category;
-		$row->ImageReady = $row->fieldData->$image_ready_prop;
+		$row->ImageReady = $row->fieldData->ImageReady;
 		$row->Artist_First_Name = $row->fieldData->$artist_first_prop;
 		$row->Artist_Middle_Name = $row->fieldData->$artist_middle_prop;
 		$row->Artist_Last_Name = $row->fieldData->$artist_last_prop;
@@ -220,7 +222,7 @@ class NMMACollectionMigration extends Migration {
 	}
 
 	protected function computeImageReady($value) {
-		return intval($value);
+		return ( '1' == $value ) ? 1 : 0;
 	}
 
 	protected function trimTitle($value) {

@@ -68,8 +68,8 @@
         'data' => $query_string
       );
 
-      // Migration::displayMessage( 'headers: ' . print_r( $http_options, true ) );
       $result = drupal_http_request($url, $http_options);
+      // Migration::displayMessage( 'result: ' . print_r( $result, true ) );
 
       if($result->status_message == 'OK') {
         $body = $result->data;
@@ -94,11 +94,12 @@
     protected function getIDsFromJSON(array $data) {
       $ids = array();
       $records = $data['response']['data'];
-      // Migration::displayMessage( print_r( $records, true ) );
-
+      
       foreach ($records as $item) {
-        $ids[] = $item['recordId'];
+        $field_data = $item['fieldData'];
+        $ids[] = $field_data['_pKey'];
       }
+      // Migration::displayMessage( print_r( count($ids), true ) );
       return $ids;
     }
 
@@ -140,7 +141,7 @@
           $response_data = $data->response->data;
           // Migration::displayMessage(print_r($response_data, true));
           foreach ($response_data as $item) {
-            $this->data[$item->recordId] = $item;
+            $this->data[$item->fieldData->_pKey] = $item;
           }
         }
         else {
